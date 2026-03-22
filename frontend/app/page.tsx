@@ -17,6 +17,7 @@ export default function Home() {
   const [annualMaintenance, setAnnualMaintenance] = useState('100');
   const [sellFeeRate, setSellFeeRate] = useState('0.5');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [started, setStarted] = useState(false);
 
   const rentNum = Number(rent);
   const priceNum = Number(price);
@@ -202,6 +203,117 @@ export default function Home() {
     if (!calc) return 1;
     return Math.max(calc.rentTotal, calc.buyNetCost, 1);
   }, [calc]);
+
+  if (!started) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          background: 'linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%)',
+          padding: '24px 16px 40px',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '860px',
+            margin: '0 auto',
+            width: '100%',
+            backgroundColor: '#ffffff',
+            borderRadius: '28px',
+            padding: '28px 22px',
+            boxShadow: '0 16px 40px rgba(37, 99, 235, 0.10)',
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 12px',
+              borderRadius: '999px',
+              backgroundColor: '#eff6ff',
+              color: '#2563eb',
+              fontSize: '13px',
+              fontWeight: 800,
+              marginBottom: '18px',
+            }}
+          >
+            월세 vs 매수
+          </div>
+
+          <h1
+            style={{
+              fontSize: 'clamp(32px, 6vw, 52px)',
+              lineHeight: 1.15,
+              fontWeight: 900,
+              margin: '0 0 14px 0',
+              color: '#111827',
+              wordBreak: 'keep-all',
+            }}
+          >
+            지금 집을 사는 게 나을까,
+            <br />
+            계속 월세로 사는 게 나을까?
+          </h1>
+
+          <p
+            style={{
+              margin: 0,
+              color: '#4b5563',
+              fontSize: '17px',
+              lineHeight: 1.7,
+              wordBreak: 'keep-all',
+            }}
+          >
+            대출 이자, 집값 상승률, 월세 인상률까지 반영해서
+            <br />
+            내 조건에 맞는 선택을 한눈에 비교해봐.
+          </p>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: '12px',
+              marginTop: '24px',
+              marginBottom: '24px',
+            }}
+          >
+            <LandingPoint title="실제 비용 비교" desc="월세 총액과 매수 순비용을 같이 확인" />
+            <LandingPoint title="미래 집값 반영" desc="보유 기간 뒤 예상 집값까지 계산" />
+            <LandingPoint title="중립 판단 제공" desc="차이가 작으면 과한 추천 없이 안내" />
+          </div>
+
+          <div
+            style={{
+              background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
+              borderRadius: '22px',
+              padding: '22px',
+              color: 'white',
+              marginBottom: '20px',
+            }}
+          >
+            <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>
+              예시 기준
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: 900, marginBottom: '10px' }}>
+              10년 기준 차이까지 바로 확인
+            </div>
+            <div style={{ fontSize: '15px', lineHeight: 1.6, opacity: 0.95 }}>
+              월세 75만원, 집값 5억, 대출 70%, 금리 3% 같은 조건으로
+              시작해두었어. 숫자만 바꿔서 바로 비교할 수 있어.
+            </div>
+          </div>
+
+          <button type="button" onClick={() => setStarted(true)} style={startButtonStyle}>
+            계산하기
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -456,6 +568,31 @@ export default function Home() {
             값을 모두 입력해줘
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function LandingPoint({
+  title,
+  desc,
+}: {
+  title: string;
+  desc: string;
+}) {
+  return (
+    <div
+      style={{
+        backgroundColor: '#f8fafc',
+        borderRadius: '18px',
+        padding: '16px',
+      }}
+    >
+      <div style={{ fontSize: '16px', fontWeight: 800, color: '#111827', marginBottom: '6px' }}>
+        {title}
+      </div>
+      <div style={{ fontSize: '14px', color: '#6b7280', lineHeight: 1.55, wordBreak: 'keep-all' }}>
+        {desc}
       </div>
     </div>
   );
@@ -778,6 +915,19 @@ const twoColumnGridStyle: React.CSSProperties = {
   gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
   gap: '14px',
   marginBottom: '18px',
+};
+
+const startButtonStyle: React.CSSProperties = {
+  width: '100%',
+  border: 'none',
+  background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
+  color: '#ffffff',
+  borderRadius: '18px',
+  padding: '18px 20px',
+  fontSize: '18px',
+  fontWeight: 800,
+  cursor: 'pointer',
+  boxShadow: '0 10px 24px rgba(37, 99, 235, 0.22)',
 };
 
 const toggleButtonStyle: React.CSSProperties = {
